@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -63,7 +64,7 @@ public class JSONParser {
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 
 			// Http connect success.
-			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
 			} else {

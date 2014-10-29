@@ -61,13 +61,13 @@ public class MainActivity extends Activity {
 		uploadButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AttemptLogin().execute(uploadFilePath, uploadFileName);
+				new UploadFileFromURL().execute(uploadFilePath, uploadFileName);
 
 			}
 		});		
 	}
 
-	class AttemptLogin extends AsyncTask<String, String, String> {
+	class UploadFileFromURL extends AsyncTask<String, String, String> {
 
 		/**
 		 * Before starting background thread Show Progress Dialog
