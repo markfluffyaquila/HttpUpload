@@ -4,6 +4,10 @@
     <string name="app_name">Upload</string>
 	<string name="menu_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+
+    <!-- MainActivity activity -->
     <string name="main_activity_upload_btn">Click To Upload File</string>
+    <string name="main_activity_upload_text">Download file path : </string>
+    <string name="main_activity_uploading_progress_dialog_context">Uploading file. Please wait&#8230;</string>
 
 </resources>
