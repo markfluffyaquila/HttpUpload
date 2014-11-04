@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements UploadFileCallback {
-	private static final String UPLOAD_URL = "http://192.168.0.102/upload/savetofile.php";
+	private static final String UPLOAD_URL = "http://192.168.0.101/upload/savetofile.php";
 
 	private TextView messageText;
 	private Button uploadButton;
@@ -60,7 +60,15 @@ public class MainActivity extends Activity implements UploadFileCallback {
 				R.string.main_activity_uploading_progress_dialog_context));
 		pDialog.setIndeterminate(false);// 取消進度條
 		pDialog.setCancelable(true);// 開啟取消
+		pDialog.setMax(100);
+		pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		pDialog.show();
+	}
+
+	@Override
+	public void onUploadFileProgressUpdate(int value) {
+		// TODO Auto-generated method stub
+		pDialog.setProgress(value);
 	}
 
 	@Override
@@ -71,4 +79,5 @@ public class MainActivity extends Activity implements UploadFileCallback {
 			Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
 		}
 	}
+
 }

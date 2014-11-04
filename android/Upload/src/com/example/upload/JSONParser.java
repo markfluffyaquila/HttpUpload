@@ -16,23 +16,22 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
 
 public class JSONParser {
-	private static final String UPLOAD_DIRECTORY = "myFile";
-	private static final int TIMEOUT = 5;
+	private static final String UPLOAD_DIRECTORY = "files";
 	static InputStream is = null;
 	static JSONObject jObj = null;
 	static String json = "";
-
+	private long totalSize;
 	// constructor
-	public JSONParser() {
+	ProgressUpdateCallback progressUpdate;
 
+	public JSONParser(ProgressUpdateCallback progressUpdate) {
+		this.progressUpdate = progressUpdate;
 	}
 
 	// function get json from url
@@ -44,22 +43,25 @@ public class JSONParser {
 			// request method is POST
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 
-			// Set http time out
-			HttpParams httpParams = httpClient.getParams();
-			HttpConnectionParams.setConnectionTimeout(httpParams,
-					TIMEOUT * 1000); // http.connection.timeout
-			HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT * 1000); // http.socket.timeout
-
 			// http post method, set params by setEntity
 			HttpPost httpPost = new HttpPost(url);
-			
-			MultipartEntityBuilder builder = MultipartEntityBuilder
-					.create();
+
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 			builder.addBinaryBody(UPLOAD_DIRECTORY, file,
 					ContentType.DEFAULT_BINARY, fileName);
 			HttpEntity entity = builder.build();
-			httpPost.setEntity(entity);				
+			totalSize = entity.getContentLength();
+			ProgressOutHttpEntity progressEntity = new ProgressOutHttpEntity(
+					entity, new ProgressListenerCallback() {
+						@Override
+						public void transferred(long transferedBytes) {
+							progressUpdate
+									.setProgressUpdateStatus((int) (100 * transferedBytes / totalSize));
+						}
+					});
+			
+			httpPost.setEntity(progressEntity);
 
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 

@@ -8,7 +8,8 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class UploadFileFromURL extends AsyncTask<String, String, String> {
+public class UploadFileFromURL extends AsyncTask<String, Integer, String>
+		implements ProgressUpdateCallback {
 	UploadFileCallback callback;
 	// constant value
 	private static final String ACTIVITY_TAG = "UPLOAD";
@@ -23,7 +24,7 @@ public class UploadFileFromURL extends AsyncTask<String, String, String> {
 	public UploadFileFromURL(UploadFileCallback callback) {
 		this.callback = callback;
 
-		jsonParser = new JSONParser();
+		jsonParser = new JSONParser(UploadFileFromURL.this);
 	}
 
 	/**
@@ -34,6 +35,12 @@ public class UploadFileFromURL extends AsyncTask<String, String, String> {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
 		callback.onUploadFilePreExecute();
+	}
+
+	@Override
+	protected void onProgressUpdate(Integer... values) {
+		// TODO Auto-generated method stub
+		callback.onUploadFileProgressUpdate(values[0]);
 	}
 
 	@Override
@@ -85,4 +92,13 @@ public class UploadFileFromURL extends AsyncTask<String, String, String> {
 		callback.doUploadFilePostExecute(result);
 	}
 
+	/**
+	 * Callback of ProgressUpdate, set progress update status from
+	 * ProgressOutHttpEntity
+	 * **/
+	@Override
+	public void setProgressUpdateStatus(int value) {
+		// TODO Auto-generated method stub
+		publishProgress(value);
+	}
 }

@@ -23,6 +23,8 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int hello_world=0x7f040002;
+        /**  MainActivity activity 
+         */
         public static final int main_activity_upload_btn=0x7f040003;
         public static final int main_activity_upload_text=0x7f040004;
         public static final int main_activity_uploading_progress_dialog_context=0x7f040005;
